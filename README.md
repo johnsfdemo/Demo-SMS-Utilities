@@ -1,28 +1,20 @@
 # Demo SMS Utilities
 
-This package contains invocable Apex classes that send SMS messages to a mobile phone number from Salesforce. The utilities are meant to be
-a way to demo SMS messaging without the need to install Instant Message or other telephony framework.
+This package contains invocable Apex classes that send SMS messages to a mobile phone number from Salesforce. The utilities are meant to be a way to demo SMS messaging without the need to provision demo phone numbers or intgerate another telephony framework.
 
-## DemoCommunitySMSVerification
+## `DemoCommunitySMSVerification`
 
-This invocable Apex class sends a random *n*-digit numeric string to a mobile phone number and returns the string to the caller. It can
-be used as a simple form of verification in demos, and a sample login flow is included that uses the class to send a verification code
-to a user after he or she logs in.
+This invocable Apex class sends a random *n*-digit numeric string to a mobile phone number and returns the string to the caller. It can be used as a simple form of verification in demos, and a sample [login flow](https://help.salesforce.com/articleView?id=security_login_flow_associate.htm&type=5) is included that uses the class to send a verification code to a user after he or she logs in.
 
-## DemoSendSMSMessage
+## `DemoSendSMSMessage`
 
-This invocable Apex class sends a text message to a mobile phone number and returns the string `SUCCESS` on successful sending of the
-SMS message or `FAILURE` along with an error message if for some reason the SMS cannot be sent.
+This invocable Apex class sends a text message to a mobile phone number and returns the string `SUCCESS` on successful sending of the SMS message or `FAILURE` along with an error message if for some reason the SMS cannot be sent.
 
 ## How It Works
 
-The framework sends the SMS by sending an email to the mobile phone provider's text email address.  For example, a text to 123-555-1212 on
-the U.S. AT&T network will go to `1235551212@txt.att.net`. It is for this reason that it is imperative to know the cellular network of
-the demo persona's mobile phone during the demo.  For this reason, I have included a global value set that contains all of the acceptable
-mobile provider names and have placed a custom field on the `User` object as an example.
+The framework sends the SMS by sending an email to the mobile phone provider's text email address.  For example, a text to 123-555-1212 on the U.S. AT&T network will go to `1235551212@txt.att.net`. It is for this reason that it is imperative to know the cellular network of the demo persona's mobile phone during the demo.  For this reason, I have included a global value set that contains all of the acceptable mobile provider names and have placed a custom field on the `User` object as an example.
 
-From here, it is a simple matter to retrieve the demo persona's mobile phone number (from the `User` or `Contact` record, for example)
-and the mobile network name (also from the same record, say) and pass those parameterd to the desired Apex class from a flow or process.
+From here, it is a simple matter to retrieve the demo persona's mobile phone number (from the `User` or `Contact` record, for example) and the mobile network name (also from the same record, say) and pass those parameters to the desired Apex class from a flow or process.
 
 ## How to Deploy This Package to Your Org
 
