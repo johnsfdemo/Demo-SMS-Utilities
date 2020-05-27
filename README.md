@@ -16,6 +16,10 @@ The framework sends the SMS by sending an email to the mobile phone provider's t
 
 From here, it is a simple matter to retrieve the demo persona's mobile phone number (from the `User` or `Contact` record, for example) and the mobile network name (also from the same record, say) and pass those parameters to the desired Apex class from a flow or process.
 
+## Security
+
+I have also included a permission set called `Demo SMS Utilities` to grant access to the Apex classes in this package for demo personas without System Administrator profiles.
+
 ## How to Deploy This Package to Your Org
 
 I am a pre-sales Solutions Engineer for [Salesforce](https://www.salesforce.com) and I develop solutions for my customers to demonstrate the capabilities of the amazing Salesforce platform. *This package represents functionality that I have used for demonstration purposes  and the content herein is definitely not ready for actual production use; specifically, it has not been tested extensively nor has it been written with security and access controls in mind. By installing this package, you assume all risk for any consequences and agree not to hold me or my company liable.*  If you are OK with that ...
