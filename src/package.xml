@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Demo SMS Utilities</fullName>
+    <description>Contains a global picklist value set containing a list of U.S. mobile telephone providers and two invocable Apex classes. One sends an n-digit verification number to a person&apos;s mobile phone and the other sends an SMS text message.</description>
+    <types>
+        <members>DemoCommunitySMSVerification</members>
+        <members>DemoSendSMSMessage</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>User.Mobile_Telephone_Provider__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Login_Flow_with_SMS_Verification</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>Mobile_Telephone_Provider</members>
+        <name>GlobalValueSet</name>
+    </types>
+    <types>
+        <members>Demo_SMS_Utilities</members>
+        <name>PermissionSet</name>
+    </types>
+    <version>45.0</version>
+</Package>

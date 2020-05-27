@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>DemoCommunitySMSVerification</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DemoSendSMSMessage</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>Grants access to the invocable Apex classes in the Demo SMS Utilities package.</description>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>User.Mobile_Telephone_Provider__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Demo SMS Utilities</label>
+</PermissionSet>

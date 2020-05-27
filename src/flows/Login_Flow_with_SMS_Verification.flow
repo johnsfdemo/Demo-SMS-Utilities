@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Generates and sends an SMS verification code to the mobile phone of the user attempting to log in.</description>
+        <name>Generate_Verification_Code</name>
+        <label>Generate Verification Code</label>
+        <locationX>362</locationX>
+        <locationY>50</locationY>
+        <actionName>DemoCommunitySMSVerification</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Validation_Screen</targetReference>
+        </connector>
+        <inputParameters>
+            <name>phoneNumber</name>
+            <value>
+                <elementReference>UserObject.MobilePhone</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>mobileProvider</name>
+            <value>
+                <elementReference>UserObject.Mobile_Telephone_Provider__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>numberOfDigits</name>
+            <value>
+                <numberValue>5.0</numberValue>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>VerificationCode</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <description>Sends a notification to the user who just logged in that a login attempt succeeded.</description>
+        <name>Send_Notification_Email</name>
+        <label>Send Notification Email</label>
+        <locationX>972</locationX>
+        <locationY>49</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>do-not-reply@irs.demo</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>UserObject.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <stringValue>This is to notify you that a login was made to your IRS Taxpayer Community account today. If you logged in, you may disregard this message. If not, please contact the IRS immediately at (800) 555-1212.</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Login to IRS Taxpayer Community</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <decisions>
+        <name>Send_Another_Verification_Code</name>
+        <label>Send Another Verification Code?</label>
+        <locationX>468</locationX>
+        <locationY>274</locationY>
+        <defaultConnector>
+            <targetReference>Validation_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Don&apos;t Send Another Code</defaultConnectorLabel>
+        <rules>
+            <name>Send_Another_Code</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SendAnotherVerificationCode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Generate_Verification_Code</targetReference>
+            </connector>
+            <label>Send Another Code</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check to see if the verification code was confirmed.</description>
+        <name>Verification_Succeeded</name>
+        <label>Verification Succeeded?</label>
+        <locationX>742</locationX>
+        <locationY>52</locationY>
+        <defaultConnector>
+            <targetReference>VerificationFailedDialog</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Verification Failed</defaultConnectorLabel>
+        <rules>
+            <name>Verify_Succeeded</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VerificationCode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ValidationCodeEntered</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Notification_Email</targetReference>
+            </connector>
+            <label>Verify Succeeded</label>
+        </rules>
+    </decisions>
+    <description>Login flow that uses SMS verification to simulate a two-factor verification.</description>
+    <interviewLabel>Login Flow with SMS Verification {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Login Flow with SMS Verification</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Get_User_Record</name>
+        <label>Get User Record</label>
+        <locationX>217</locationX>
+        <locationY>50</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Generate_Verification_Code</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>LoginFlow_UserId</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputReference>UserObject</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>MobilePhone</queriedFields>
+        <queriedFields>Email</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>Mobile_Telephone_Provider__c</queriedFields>
+    </recordLookups>
+    <screens>
+        <name>Validation_Screen</name>
+        <label>Validation Screen</label>
+        <locationX>608</locationX>
+        <locationY>50</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Verification_Succeeded</targetReference>
+        </connector>
+        <fields>
+            <name>ValidationCodeText</name>
+            <fieldText>&lt;p&gt;A validation code has been sent to {!UserObject.MobilePhone}.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ValidationCodeEntered</name>
+            <dataType>String</dataType>
+            <fieldText>Enter the validation code:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>VerificationFailedDialog</name>
+        <label>Verification Failed Dialog</label>
+        <locationX>752</locationX>
+        <locationY>272</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Send_Another_Verification_Code</targetReference>
+        </connector>
+        <fields>
+            <name>VerificationFailedTextbox</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;The verification number you provided does not match the one we sent. Please try again.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>SendAnotherVerificationCode</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Send Another Verification Code</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Select this to send another verification code to the mobile phone number on file with the IRS.&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <startElementReference>Get_User_Record</startElementReference>
+    <status>Active</status>
+    <variables>
+        <description>Set by the system to contain the user ID of the person attempting to log in.</description>
+        <name>LoginFlow_UserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>UserObject</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>User</objectType>
+    </variables>
+    <variables>
+        <name>VerificationCode</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

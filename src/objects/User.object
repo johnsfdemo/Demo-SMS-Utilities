@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Mobile_Telephone_Provider__c</fullName>
+        <description>Mobile telephone provider for the mobile number in the contact record. Used by the DemoCommunitySMSVerification Apex class to send an SMS message to the demo persona.</description>
+        <externalId>false</externalId>
+        <label>Mobile Telephone Provider</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Mobile_Telephone_Provider</valueSetName>
+        </valueSet>
+    </fields>
+</CustomObject>
