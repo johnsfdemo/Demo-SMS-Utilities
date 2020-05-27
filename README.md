@@ -4,11 +4,11 @@ This package contains invocable Apex classes that send SMS messages to a mobile 
 
 ## `DemoCommunitySMSVerification`
 
-This invocable Apex class sends a random *n*-digit numeric string to a mobile phone number and returns the string to the caller. It can be used as a simple form of verification in demos, and a sample [login flow](https://help.salesforce.com/articleView?id=security_login_flow_associate.htm&type=5) is included that uses the class to send a verification code to a user after he or she logs in.
+This invocable Apex class sends a random *n*-digit numeric string to a mobile phone number and returns the string to the caller. It can be used as a simple form of verification in demos, and a sample [login flow](https://help.salesforce.com/articleView?id=security_login_flow_associate.htm&type=5) is included that uses the class to send a verification code to a user after he or she logs in. It will appear in process builder or flow lists as `Generate and Send Verification Code`.
 
 ## `DemoSendSMSMessage`
 
-This invocable Apex class sends a text message to a mobile phone number and returns the string `SUCCESS` on successful sending of the SMS message or `FAILURE` along with an error message if for some reason the SMS cannot be sent.
+This invocable Apex class sends a text message to a mobile phone number and returns the string `SUCCESS` on successful sending of the SMS message or `FAILURE` along with an error message if for some reason the SMS cannot be sent. It will appear in process builder or flow lists as `Send SMS Message`.
 
 ## How It Works
 
